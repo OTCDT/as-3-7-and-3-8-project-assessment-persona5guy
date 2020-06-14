@@ -1,5 +1,5 @@
 # Game Table Version 0
-## 12/06/2020
+## 15/06/2020
 This project is designed to help the user choose a game from the selection of different games based on their time till completion
 
 ## Requirements
@@ -28,7 +28,7 @@ git pull https://github.com/OTCDT/as-3-7-and-3-8-project-assessment-persona5guy.
 ```
 
 ### Current Changes
-Added in requirements and specifications to the read me
+Created the class framework, now can make dummy classes for selection process
 
 
 ## Authors

@@ -4,7 +4,7 @@
 #         Josh Peacocke        #
 #------------------------------#
 #============Changes===========#
-## Change date: 11/6/2020
+## Change date: 15/6/2020
 ## Change Branch: Class Creation
 # Modified Game class
 # Created remaining_hours and true_priority
