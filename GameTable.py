@@ -44,3 +44,6 @@ persona5royal = Game("Persona 5 Royal", 150, 120, 1)
 xenobladechronicles = Game("Xenoblade Chronicles", 45, 0, 2)
 persona3fes = Game("Persona 3 FES", 88, 30, 3)
 
+print(persona5royal.played_hours)
+persona5royal.played(10)
+print(persona5royal.played_hours)
