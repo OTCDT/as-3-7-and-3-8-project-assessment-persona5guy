@@ -28,7 +28,8 @@ git pull https://github.com/OTCDT/as-3-7-and-3-8-project-assessment-persona5guy.
 ```
 
 ### Current Changes
-There is now a very simple sorting process based on the true priority only, using a key in the sort function
+There is now a very simple sorting process based on the true priority only, using a key in the sort function.
+This was decieded on as opposed to inserting the next section in the sorted section as that option was too complex. It was easier to just use the built in sort function
 
 
 ## Authors
