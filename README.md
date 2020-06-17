@@ -1,7 +1,6 @@
 # Game Table Version 0
 
 ## 16/06/2020
-=======
 This project is designed to help the user choose a game from the selection of different games based on their time till completion
 
 ## Requirements
