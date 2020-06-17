@@ -6,7 +6,7 @@
 #============Changes===========#
 ## Change date: 16/6/2020
 ## Change Branch: key sort
-# testing the sorting key method
+# Testing the sorting key method
 
 #==========Game Class==========#
 class Game:
@@ -38,6 +38,7 @@ class Game:
         self.update_values()
 
 
+
 #===========Functions==========#
 def sort_games(list):
     def sort_key(game):
@@ -55,3 +56,6 @@ dummy_list = [persona3fes,persona4golden,persona5royal,xenobladechronicles]
 
 sorted_list = sort_games(dummy_list)
 for i in sorted_list: print(i.game_name + ' ' + str(i.true_priority))
+print(persona5royal.played_hours)
+persona5royal.played(10)
+print(persona5royal.played_hours)
