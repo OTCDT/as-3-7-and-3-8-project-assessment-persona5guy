@@ -37,25 +37,33 @@ class Game:
         self._total_hours += finish_hours  #Add hours to the total
         self.update_values()
 
-
-
 #===========Functions==========#
-def sort_games(list):
-    def sort_key(game):
+def sort_games(game_list): #This function is designed to sort the list of games by order of priority
+    def sort_key(game): #Get the games true priority as a key for sorting
         return game.true_priority
     
-    list.sort(key=sort_key)
-    return list
+    game_list.sort(key=sort_key) #sort the list using true priority
+    return game_list #Give the list back
+
+def add_games(): #This is to let users create objects to be added to lists
+    name=input("What's the games name?") #Add a name
+    total_hours=int(input("How many hours approximately will it take to finish the game?")) #The total hours to play game
+    played_hours=int(input("How many hours have you played?")) #How many hours have been played
+    priority=int(input("From 0 being maximum priority, what is the priority to finish the game")) #How much does the user want to play it
+    return(Game(name,total_hours,played_hours,priority)) #Give back the array
+
+def collection(): #Collect the add games into a list
+    game_array = [] #Empty array to add games to
+    while input("Would you like to add a game? y/n") == "y": #Keep adding games until user doesn't want to add more
+        game_array.append(add_games()) #Append the game to the array
+    return game_array #Give back the created array
 #=======Dummy Variables========#
-persona4golden = Game("Persona 4 Golden", 102, 0, 2)
-persona5royal = Game("Persona 5 Royal", 150, 120, 1)
-xenobladechronicles = Game("Xenoblade Chronicles", 45, 0, 2)
-persona3fes = Game("Persona 3 FES", 88, 30, 3)
+game_array = collection()
 
-dummy_list = [persona3fes,persona4golden,persona5royal,xenobladechronicles]
-
-sorted_list = sort_games(dummy_list)
+sorted_list = sort_games(game_array)
+print("All games in list \/ \/ \/")
 for i in sorted_list: print(i.game_name + ' ' + str(i.true_priority))
-print(persona5royal.played_hours)
-persona5royal.played(10)
-print(persona5royal.played_hours)
+print("Finish list /\ /\ /\ \n \n \n")
+print("You should play " + sorted_list[0].game_name)
+
+#haha funny number line
