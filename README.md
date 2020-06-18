@@ -17,7 +17,7 @@ This project is designed to help the user choose a game from the selection of di
 - A simple way to add data of games to be played, how long to beat, if it is multiplayer, priority. This breaks down the information into values so that they can be processed through the algorithm  [Implemented]
 - A way to reduce priority of a game. As some people may start to lose interest in a game, there needs to be a way to reflect that in the algorithm. [Not Implemented]
 - Adding how long a person should be playing a game for, updating with how long the person did play for. This can be used in tandem with the length of the game to help the decision. [Not Implemented]
-- Adding a general schedule of free time to work time, so times can be allocated. This will help know the schedule and length of free time that is to be used for. [Implemented]
+- Adding a general schedule of free time to work time, so times can be allocated. This will help know the schedule and length of free time that is to be used for. [Not Implemented]
 
 ## Getting Started
 
