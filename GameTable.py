@@ -4,8 +4,8 @@
 #         Josh Peacocke        #
 #------------------------------#
 #============Changes===========#
-## Change date: 18/6/2020
-## Change Branch: version_1
+## Change date: 23/6/2020
+## Change Branch: bugfix-v1
 # Testing and Feedback on 1st prototype
 
 #==========Game Class==========#
