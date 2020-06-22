@@ -1,6 +1,6 @@
 # Game Table Version 1
 
-## 18/06/2020
+## 23/06/2020
 This project is designed to help the user choose a game from the selection of different games based on their time till completion
 
 ## Requirements
@@ -30,8 +30,8 @@ git pull https://github.com/OTCDT/as-3-7-and-3-8-project-assessment-persona5guy.
 
 ### Current Changes
 
-Collection is now implemented. This was done by adding the collection() function.
-Dummy Variables have been removed, as they have become redundant to the collection()
+Feedback was collected, and as such fixes to the bugs found in the feedback are now applied, the bugs fixed were:
+- No space after print message
 
 ## Authors
 **Joshua Peacocke**
