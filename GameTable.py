@@ -46,15 +46,15 @@ def sort_games(game_list): #This function is designed to sort the list of games 
     return game_list #Give the list back
 
 def add_games(): #This is to let users create objects to be added to lists
-    name=input("What's the games name?") #Add a name
-    total_hours=int(input("How many hours approximately will it take to finish the game?")) #The total hours to play game
-    played_hours=int(input("How many hours have you played?")) #How many hours have been played
-    priority=int(input("From 0 being maximum priority, what is the priority to finish the game")) #How much does the user want to play it
+    name=input("What's the games name? ") #Add a name
+    total_hours=int(input("How many hours approximately will it take to finish the game? ")) #The total hours to play game
+    played_hours=int(input("How many hours have you played? ")) #How many hours have been played
+    priority=int(input("From 0 being maximum priority, what is the priority to finish the game ")) #How much does the user want to play it
     return(Game(name,total_hours,played_hours,priority)) #Give back the array
 
 def collection(): #Collect the add games into a list
     game_array = [] #Empty array to add games to
-    while input("Would you like to add a game? y/n") == "y": #Keep adding games until user doesn't want to add more
+    while input("Would you like to add a game? y/n ") == "y": #Keep adding games until user doesn't want to add more
         game_array.append(add_games()) #Append the game to the array
     return game_array #Give back the created array
 #=======Dummy Variables========#
