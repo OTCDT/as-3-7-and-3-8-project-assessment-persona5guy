@@ -23,16 +23,20 @@ class Game:
         #Add the priority given by the user
         self.priority = priority 
         #How many hours left until user finishes game
-        self.remaining_hours = (self._total_hours - self.played_hours) 
+        self.remaining_hours = (self._total_hours 
+                                - self.played_hours) 
         #What is the priority of the game balanced with the time till finished
-        self.true_priority = self.remaining_hours * self.priority 
+        self.true_priority = (self.remaining_hours 
+                              * self.priority )
     
     def update_values(
         self):
         #Update remaining hours
-        self.remaining_hours = self._total_hours - self.played_hours 
+        self.remaining_hours = (self._total_hours 
+                                - self.played_hours) 
         #Update the true priority
-        self.true_priority = self.remaining_hours / self.priority
+        self.true_priority = (self.remaining_hours 
+                              / self.priority)
         
     def played(
         self, hours):
@@ -62,12 +66,14 @@ class Game:
 def sort_games(
     game_list): 
     #This function is designed to sort the list of games by order of priority
-    def sort_key(game): #Get the games true priority as a key for sorting
-        return game.true_priority
-    
-    game_list.sort(key=sort_key) #sort the list using true priority
     #haha funny number line
-    return game_list #Give the list back
+    #Get the games true priority as a key for sorting
+    def sort_key(game): 
+        return game.true_priority
+    #sort the list using true priority
+    game_list.sort(key=sort_key) 
+    #Give the list back
+    return game_list 
 
 def add_games(): 
     #This is to let users create objects to be added to lists
@@ -105,7 +111,10 @@ game_array = collection()
 sorted_list = sort_games(game_array)
 print("All games in list \/ \/ \/")
 for i in sorted_list: print(i.game_name + ' ' + str(i.true_priority))
-print("Finish list /\ /\ /\ \n \n \n")
+print("""Finish list /\ /\ /\ 
+    \n 
+    \n 
+    \n""")
 print("You should play " + sorted_list[0].game_name)
 
 
