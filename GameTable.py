@@ -66,9 +66,9 @@ class Game:
 #===========Functions==========#
 
 def sort_games(
+    # haha funny number line
     game_list): 
     # This function is designed to sort the list of games by order of priority
-    # haha funny number line
     # Get the games true priority as a key for sorting
     def sort_key(game): 
         return game.true_priority
