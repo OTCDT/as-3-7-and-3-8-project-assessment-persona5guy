@@ -1,12 +1,12 @@
 ##========= GameTable ========##
-#---------- Version 0 ---------#
+#---------- Version 1 ---------#
 #::::::::::Contributers::::::::#
 #         Josh Peacocke        #
 #------------------------------#
 #============Changes===========#
-## Change date: 18/6/2020
-## Change Branch: version_1
-# Testing and Feedback on 1st prototype
+## Change date: 23/6/2020
+## Change Branch: v1-bugfix
+# Debugging of processes found in the testing process
 
 #==========Game Class==========#
 class Game:
@@ -16,7 +16,7 @@ class Game:
         self.played_hours = played_hours #Add hours the user has played
         self.priority = priority #Add the priority given by the user
         self.remaining_hours = (self._total_hours - self.played_hours) #How many hours left until user finishes game
-        self.true_priority = self.remaining_hours * self.priority #What is the priority of the game balanced with the time till finished
+        self.true_priority = self.remaining_hours / self.priority #What is the priority of the game balanced with the time till finished
     
     def update_values(self):
         self.remaining_hours = self._total_hours - self.played_hours #Update remaining hours
@@ -46,15 +46,15 @@ def sort_games(game_list): #This function is designed to sort the list of games 
     return game_list #Give the list back
 
 def add_games(): #This is to let users create objects to be added to lists
-    name=input("What's the games name?") #Add a name
-    total_hours=int(input("How many hours approximately will it take to finish the game?")) #The total hours to play game
-    played_hours=int(input("How many hours have you played?")) #How many hours have been played
-    priority=int(input("From 0 being maximum priority, what is the priority to finish the game")) #How much does the user want to play it
+    name=input("What's the games name? ") #Add a name
+    total_hours=float(input("How many hours approximately will it take to finish the game? ")) #The total hours to play game
+    played_hours=float(input("How many hours have you played? ")) #How many hours have been played
+    priority=int(input("From 10 being maximum priority, what is the priority to finish the game ")) #How much does the user want to play it
     return(Game(name,total_hours,played_hours,priority)) #Give back the array
 
 def collection(): #Collect the add games into a list
     game_array = [] #Empty array to add games to
-    while input("Would you like to add a game? y/n") == "y": #Keep adding games until user doesn't want to add more
+    while input("Would you like to add a game? y/n ") == "y",: #Keep adding games until user doesn't want to add more
         game_array.append(add_games()) #Append the game to the array
     return game_array #Give back the created array
 #=======Dummy Variables========#
