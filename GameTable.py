@@ -4,11 +4,11 @@
 #         Josh Peacocke        #
 #------------------------------#
 #============Changes===========#
-               """
+"""
  Change date: 23/6/2020
  Change Branch: v1-stylefix
  Testing and Feedback on 1st prototype
-               """
+"""
 #==========Game Class==========#
 class Game:
     def __init__(
@@ -80,19 +80,19 @@ def sort_games(
 def add_games(): 
     # This is to let users create objects to be added to lists
     # Define a name
-    name = input("""
-         What's the games name? """) 
+    name = input(
+            "What's the games name? ") 
     # The total hours to play game
-    total_hours = int(input("""
-                How many hours approximately 
-                will it take to finish the game? """)) 
+    total_hours = int(input(
+                "How many hours approximately "
+                + "will it take to finish the game? ")) 
     # How many hours have been played
-    played_hours = int(input("""
-                How many hours have you played? """)) 
+    played_hours = int(input(
+                "How many hours have you played? ")) 
     # How much does the user want to play it
-    priority = int(input("""
-                From 0 being maximum priority, what is 
-                the priority to finish the game """))
+    priority = int(input(
+                "From 0 being maximum priority, what is "
+                + "the priority to finish the game "))
     # Give back the array
     return(
         Game(name,total_hours,played_hours,priority)) 
