@@ -1,6 +1,6 @@
 # Game Table Version 1
 
-## 23/06/2020
+## 30/06/2020
 This project is designed to help the user choose a game from the selection of different games based on their time till completion
 
 ## Requirements
@@ -30,8 +30,13 @@ git pull https://github.com/OTCDT/as-3-7-and-3-8-project-assessment-persona5guy.
 
 ### Current Changes
 
-Feedback was collected, and as such fixes to the bugs found in the feedback are now applied, the bugs fixed were:
-- No space after print message
+Fixing Bugs, including:
+- infinite values
+- under one hour
+- reversed order of priority
+- played hours > total hours
+- full word input
+- unexepected values
 
 ## Authors
 **Joshua Peacocke**
