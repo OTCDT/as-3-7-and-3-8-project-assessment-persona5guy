@@ -132,7 +132,7 @@ def add_games():
     priority = float(input(
                 "Enter a priority from 1(Low) to 10(High) "))
     # If it is not the range, make the user input in the range
-    while not 0 <= priority =< 10:
+    while not 0 <= priority <= 10:
             priority = float(input("Please enter a value between 1 to 10"))
     # Give back the array
     return(
@@ -163,5 +163,3 @@ if len(sorted_list) > 0:
     print("You should play " + sorted_list[0].game_name)
 else:
     print("No games were added")
-
-
