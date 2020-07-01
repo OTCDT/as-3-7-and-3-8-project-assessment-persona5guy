@@ -111,10 +111,10 @@ def add_games():
     # Does the game finish?
     while repeating == "no answer":
         repeating = boolean_input(
-                                "Does the game have a finish time?")
+                                "Does the game have a finish time? (y/n) ")
         # Select between an 'infinite' or finite game
         if repeating == "negative":
-            total_hours = float(input("How many hours for one game?"))
+            total_hours = float(input("How many hours for one session? "))
         elif repeating == "positive":
             while played_hours > total_hours or 0 > total_hours or 0 > played_hours:
                 # The total hours to play game
@@ -130,7 +130,7 @@ def add_games():
                     print("The hours must be a positive value")
     # How much does the user want to play it
     priority = float(input(
-                "Enter a priority from 1(Low) to 10(High)"))
+                "Enter a priority from 1(Low) to 10(High) "))
     # If it is not the range, make the user input in the range
     while not 0 <= priority < 11:
             priority = float(input("Please enter a value between 1 to 10"))
@@ -143,7 +143,7 @@ def collection():
     # Empty array to add games to 
     game_array = []
     # Keep adding games until user doesn't want to add more
-    while boolean_input("Would you like to add a game?") == "positive": 
+    while boolean_input("Would you like to add a game? (y/n)") == "positive": 
         # Append the game to the array
         game_array.append(add_games())
     # Give back the created array
