@@ -5,16 +5,11 @@
 #------------------------------#
 #============Changes===========#
 """
- Change date: 31/6/2020
- Change Branch: v1-bugfix
- Fixing Bugs, including:
- infinite values
- under one hour
- reversed order of priority
- played hours > total hours
- full word input
- unexepected values
+ Change date: 2/7/2020
+ Change Branch: saving-data
+ Adding in the ability to save new data
  """
+
 #==========Game Class==========#
 class Game:
     def __init__(
@@ -66,13 +61,12 @@ class Game:
 
     def increase_time(
         self, finish_hours): 
-        # haha funny number line
         # Update the time if the user feels more time is needed
         self._total_hours += finish_hours  # Add hours to the total
         self.update_values()
 
 #===========Functions==========# 
-
+# haha funny number line
 def boolean_input(user_input):
     while True:
         message = input(user_input)
@@ -143,7 +137,7 @@ def collection():
     # Empty array to add games to 
     game_array = []
     # Keep adding games until user doesn't want to add more
-    while boolean_input("Would you like to add a game? (y/n)") == "positive": 
+    while boolean_input("\nWould you like to add a game? (y/n)") == "positive": 
         # Append the game to the array
         game_array.append(add_games())
     # Give back the created array
@@ -163,3 +157,5 @@ if len(sorted_list) > 0:
     print("You should play " + sorted_list[0].game_name)
 else:
     print("No games were added")
+
+save(sorted_list)
