@@ -5,7 +5,7 @@
 #------------------------------#
 #============Changes===========#
 """
- Change date: 30/6/2020
+ Change date: 31/6/2020
  Change Branch: v1-bugfix
  Fixing Bugs, including:
  infinite values
@@ -132,7 +132,7 @@ def add_games():
     priority = float(input(
                 "Enter a priority from 1(Low) to 10(High)"))
     # If it is not the range, make the user input in the range
-    while not 0 <= priority <= 11:
+    while not 0 <= priority < 11:
             priority = float(input("Please enter a value between 1 to 10"))
     # Give back the array
     return(
