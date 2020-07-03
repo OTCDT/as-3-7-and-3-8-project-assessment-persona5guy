@@ -5,11 +5,13 @@
 #------------------------------#
 #============Changes===========#
 """
- Change date: 2/7/2020
+ Change date: 3/7/2020
  Change Branch: saving-data
  Adding in the ability to save new data
  """
 
+#============Imports===========#
+import pickle as pkl
 #==========Game Class==========#
 class Game:
     def __init__(
@@ -64,9 +66,9 @@ class Game:
         # Update the time if the user feels more time is needed
         self._total_hours += finish_hours  # Add hours to the total
         self.update_values()
-
-#===========Functions==========# 
 # haha funny number line
+#===========Functions==========# 
+
 def boolean_input(user_input):
     while True:
         message = input(user_input)
@@ -93,6 +95,8 @@ def sort_games(
     game_list.sort(key=sort_key) 
     # Give the list back
     return game_list 
+
+#---------Collection----------#
 
 def add_games(): 
     # Dummy Variables
@@ -143,9 +147,24 @@ def collection():
     # Give back the created array
     return game_array 
 
-#=======Dummy Variables========#
+#--------save system----------#
 
-game_array = collection()
+def save(object_array):
+    # Save the game into a file
+    with open("game.dat", "wb") as output:
+        pkl.dump(object_array, output)
+def load():
+    # Load game into the file
+    with open("game.dat", "rb") as input:
+        return pkl.load(input)
+
+#=======Dummy Variables========#
+game_array = load()
+for game in game_array:
+    print(game.game_name)
+new_games = collection()
+for game in new_games:
+    game_array.append(game)
 sorted_list = sort_games(game_array)
 print("All games in list")
 for i in sorted_list: print(i.game_name + ' ' + str(i.true_priority))
