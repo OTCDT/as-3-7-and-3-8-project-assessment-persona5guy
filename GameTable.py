@@ -10,6 +10,8 @@
  Adding in the ability to save new data
  """
 
+#============Imports===========#
+import pickle as pkl
 #==========Game Class==========#
 class Game:
     def __init__(
@@ -142,6 +144,9 @@ def collection():
         game_array.append(add_games())
     # Give back the created array
     return game_array 
+def save(object_array):
+    with open("game.dat", "wb") as output:
+        pkl.dump(object_array, output)
 
 #=======Dummy Variables========#
 
