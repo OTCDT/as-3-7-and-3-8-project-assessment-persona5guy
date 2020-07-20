@@ -5,16 +5,13 @@
 #------------------------------#
 #============Changes===========#
 """
- Change date: 31/6/2020
- Change Branch: v1-bugfix
- Fixing Bugs, including:
- infinite values
- under one hour
- reversed order of priority
- played hours > total hours
- full word input
- unexepected values
+ Change date: 3/7/2020
+ Change Branch: saving-data
+ Adding in the ability to save new data
  """
+
+#============Imports===========#
+import pickle as pkl
 #==========Game Class==========#
 class Game:
     def __init__(
@@ -66,11 +63,10 @@ class Game:
 
     def increase_time(
         self, finish_hours): 
-        # haha funny number line
         # Update the time if the user feels more time is needed
         self._total_hours += finish_hours  # Add hours to the total
         self.update_values()
-
+# haha funny number line
 #===========Functions==========# 
 
 def boolean_input(user_input):
@@ -99,6 +95,8 @@ def sort_games(
     game_list.sort(key=sort_key) 
     # Give the list back
     return game_list 
+
+#---------Collection----------#
 
 def add_games(): 
     # Dummy Variables
@@ -143,15 +141,30 @@ def collection():
     # Empty array to add games to 
     game_array = []
     # Keep adding games until user doesn't want to add more
-    while boolean_input("Would you like to add a game? (y/n)") == "positive": 
+    while boolean_input("\nWould you like to add a game? (y/n)") == "positive": 
         # Append the game to the array
         game_array.append(add_games())
     # Give back the created array
     return game_array 
 
-#=======Dummy Variables========#
+#--------save system----------#
 
-game_array = collection()
+def save(object_array):
+    # Save the game into a file
+    with open("game.dat", "wb") as output:
+        pkl.dump(object_array, output)
+def load():
+    # Load game into the file
+    with open("game.dat", "rb") as input:
+        return pkl.load(input)
+
+#=======Dummy Variables========#
+game_array = load()
+for game in game_array:
+    print(game.game_name)
+new_games = collection()
+for game in new_games:
+    game_array.append(game)
 sorted_list = sort_games(game_array)
 print("All games in list")
 for i in sorted_list: print(i.game_name + ' ' + str(i.true_priority))
@@ -163,3 +176,5 @@ if len(sorted_list) > 0:
     print("You should play " + sorted_list[0].game_name)
 else:
     print("No games were added")
+
+save(sorted_list)
