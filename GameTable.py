@@ -198,32 +198,64 @@ row_num = 1
 column_num = 0
 for game in sorted_list:
     # Create 2d Array of each entry
-    string_array = []
+    var_array = []
     entry_array = []
+    # Create a row for each game in the list
     for i in range(0,len(sorted_list)):
-        string_array.append([])
+        var_array.append([])
         entry_array.append([])
+    # Create a column for each data entry
         for j in range(0,4):
             if j == 0:
-                string_array[i].append(StringVar())
+                var_array[i].append(StringVar())
             elif j != 0:
-                string_array[i].append(DoubleVar())
+                var_array[i].append(DoubleVar())
+            # Create an entry into a table with specific coordinates (i,j)
             entry_array[i].append(Entry(games_frame,
-            textvariable = string_array[i][j]))
+            textvariable = var_array[i][j]))
 
 game_num = 0
-# Row of each entry
-for game in string_array:
+# Placement of each section of data
+for game in var_array:
+    # Set all shown variables
     game[0].set(sorted_list[game_num].game_name)
     game[1].set(sorted_list[game_num]._total_hours)
     game[2].set(sorted_list[game_num].played_hours)
     game[3].set(sorted_list[game_num].priority)
     for entry in game:
-        entry_array[row_num - 1][column_num].grid(row = row_num, column = column_num)
+        #Place the grid into it's correct place
+        entry_array[row_num - 1][column_num].grid(row = row_num, 
+        column = column_num)
         column_num += 1
     column_num = 0
     row_num += 1
     game_num += 1
+
+# Add in a new game
+def add_game():
+    add_button.grid_forget()
+    confirm_game.grid(row=1,column=0)
+    # Create a new row for the new game
+    var_array.append([])
+    entry_array.append([])
+    for j in range(0,4):
+        if j == 0:
+            var_array[-1].append(StringVar())
+        elif j != 0:
+            var_array[-1].append(DoubleVar())
+        entry_array[-1].append(Entry(games_frame, textvariable =var_array[-1][0]))
+    col_num = 0
+    for entry in entry_array[-1]:
+        entry.grid(row = len(sorted_list) + 1, column = col_num)
+        col_num += 1
+
+def collect_game():
+    pass
+
+# See if user is adding a game or not    
+add_button = Button(root, text = "Add a new game", command = add_game)
+add_button.grid(row=1, column=0)
+confirm_game = Button(root, text = "Confirm game", command = collect_game)
 # Run the GUI
 root.mainloop()
 #=======Dummy Variables========#
