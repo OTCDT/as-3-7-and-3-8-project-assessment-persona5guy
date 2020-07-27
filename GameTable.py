@@ -5,13 +5,15 @@
 #------------------------------#
 #============Changes===========#
 """
- Change date: 3/7/2020
- Change Branch: saving-data
- Adding in the ability to save new data
+ Change date: 22/7/2020
+ Change Branch: GUI
+ GUI added in
  """
 
 #============Imports===========#
 import pickle as pkl
+from tkinter import ttk
+from tkinter import *
 #==========Game Class==========#
 class Game:
     def __init__(
@@ -155,17 +157,76 @@ def save(object_array):
         pkl.dump(object_array, output)
 def load():
     # Load game into the file
-    with open("game.dat", "rb") as input:
-        return pkl.load(input)
-
-#=======Dummy Variables========#
+    try:
+        with open("game.dat", "rb") as input:
+         return pkl.load(input)
+    except FileNotFoundError:
+        return []
+#---------Editing data---------#
 game_array = load()
-for game in game_array:
-    print(game.game_name)
+
 new_games = collection()
 for game in new_games:
     game_array.append(game)
 sorted_list = sort_games(game_array)
+#------------GUI---------------#
+root = Tk()
+root.title("GameTable")
+
+# Make a Table Header for all the objects in the table
+games_frame = ttk.LabelFrame(root, text="Added Games")
+games_frame.grid(row=0,column=0,sticky="NSEW")
+
+# Title for game name
+table_title_gamename = ttk.Label(games_frame, text = "Game Name")
+table_title_gamename.grid(row=0 , column=0, padx=10, pady=2)
+
+#Title for total hours
+table_title_totalhours = ttk.Label(games_frame, text = "Total Hours")
+table_title_totalhours.grid(row=0,column=1, padx=10, pady=2)
+
+#Title for played hours
+table_title_playedhours = ttk.Label(games_frame, text = "Played Hours")
+table_title_playedhours.grid(row=0,column=2, padx=10, pady=2)
+
+#Title for priority
+table_title_priority = ttk.Label(games_frame, text = "Priority")
+table_title_priority.grid(row=0,column=3, padx=10, pady=2)
+
+#Table Creation
+row_num = 1
+column_num = 0
+for game in sorted_list:
+    # Create 2d Array of each entry
+    string_array = []
+    entry_array = []
+    for i in range(0,len(sorted_list)):
+        string_array.append([])
+        entry_array.append([])
+        for j in range(0,4):
+            if j == 0:
+                string_array[i].append(StringVar())
+            elif j != 0:
+                string_array[i].append(DoubleVar())
+            entry_array[i].append(Entry(games_frame,
+            textvariable = string_array[i][j]))
+
+game_num = 0
+# Row of each entry
+for game in string_array:
+    game[0].set(sorted_list[game_num].game_name)
+    game[1].set(sorted_list[game_num]._total_hours)
+    game[2].set(sorted_list[game_num].played_hours)
+    game[3].set(sorted_list[game_num].priority)
+    for entry in game:
+        entry_array[row_num - 1][column_num].grid(row = row_num, column = column_num)
+        column_num += 1
+    column_num = 0
+    row_num += 1
+    game_num += 1
+# Run the GUI
+root.mainloop()
+#=======Dummy Variables========#
 print("All games in list")
 for i in sorted_list: print(i.game_name + ' ' + str(i.true_priority))
 print("""Finish list
