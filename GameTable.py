@@ -170,6 +170,39 @@ for game in new_games:
     game_array.append(game)
 sorted_list = sort_games(game_array)
 #------------GUI---------------#
+
+#-------GUI functions----------#
+
+
+# Add in a new game
+def add_game():
+    add_button.grid_forget()
+    confirm_game.grid(row=1,column=0)
+    # Create a new row for the new game
+    var_array.append([])
+    entry_array.append([])
+    for j in range(0,4):
+        if j == 0:
+            var_array[-1].append(StringVar())
+        elif j != 0:
+            var_array[-1].append(DoubleVar())
+        entry_array[-1].append(ttk.Entry(games_frame, textvariable =var_array[-1][j]))
+    col_num = 0
+    for entry in entry_array[-1]:
+        entry.grid(row = len(sorted_list) + 1, column = col_num)
+        col_num += 1
+
+def collect_game():
+    confirm_game.grid_forget()
+    new_game = Game(var_array[-1][0].get(),var_array[-1][1].get(),var_array[-1][2].get(),var_array[-1][3].get())
+    print(new_game.game_name)
+    game_array.append(new_game)
+    sorted_list = sort_games(game_array)
+    add_button.grid(row=1,column=0)
+
+def delete():
+    pass
+# GUI presentation
 root = Tk()
 root.title("GameTable")
 
@@ -211,10 +244,11 @@ for game in sorted_list:
             elif j != 0:
                 var_array[i].append(DoubleVar())
             # Create an entry into a table with specific coordinates (i,j)
-            entry_array[i].append(Entry(games_frame,
+            entry_array[i].append(ttk.Entry(games_frame,
             textvariable = var_array[i][j]))
 
 game_num = 0
+exit_array = []
 # Placement of each section of data
 for game in var_array:
     # Set all shown variables
@@ -227,35 +261,17 @@ for game in var_array:
         entry_array[row_num - 1][column_num].grid(row = row_num, 
         column = column_num)
         column_num += 1
+    exit_array.append(Button(games_frame, height = 1, width = 1, command = delete))
+    exit_array[row_num - 1].grid(row = row_num, column = column_num)
     column_num = 0
     row_num += 1
     game_num += 1
 
-# Add in a new game
-def add_game():
-    add_button.grid_forget()
-    confirm_game.grid(row=1,column=0)
-    # Create a new row for the new game
-    var_array.append([])
-    entry_array.append([])
-    for j in range(0,4):
-        if j == 0:
-            var_array[-1].append(StringVar())
-        elif j != 0:
-            var_array[-1].append(DoubleVar())
-        entry_array[-1].append(Entry(games_frame, textvariable =var_array[-1][0]))
-    col_num = 0
-    for entry in entry_array[-1]:
-        entry.grid(row = len(sorted_list) + 1, column = col_num)
-        col_num += 1
-
-def collect_game():
-    pass
 
 # See if user is adding a game or not    
-add_button = Button(root, text = "Add a new game", command = add_game)
+add_button = ttk.Button(root, text = "Add a new game", command = add_game)
 add_button.grid(row=1, column=0)
-confirm_game = Button(root, text = "Confirm game", command = collect_game)
+confirm_game = ttk.Button(root, text = "Confirm game", command = collect_game)
 # Run the GUI
 root.mainloop()
 #=======Dummy Variables========#
