@@ -66,9 +66,10 @@ class Game:
     def increase_time(
         self, finish_hours): 
         # Update the time if the user feels more time is needed
+        # haha funny number line
         self._total_hours += finish_hours  # Add hours to the total
         self.update_values()
-# haha funny number line
+
 #===========Functions==========# 
 
 def boolean_input(user_input):
@@ -200,8 +201,9 @@ def collect_game():
     sorted_list = sort_games(game_array)
     add_button.grid(row=1,column=0)
 
-def delete():
-    pass
+def delete(array_loc):
+    sorted_list.pop(array_loc)
+    root.mainloop()
 # GUI presentation
 root = Tk()
 root.title("GameTable")
@@ -258,13 +260,13 @@ for game in var_array:
     game[3].set(sorted_list[game_num].priority)
     for entry in game:
         #Place the grid into it's correct place
-        entry_array[row_num - 1][column_num].grid(row = row_num, 
+        entry_array[game_num][column_num].grid(row = game_num + 1, 
         column = column_num)
         column_num += 1
-    exit_array.append(Button(games_frame, height = 1, width = 1, command = delete))
-    exit_array[row_num - 1].grid(row = row_num, column = column_num)
+    exit_array.append(Button(games_frame, height = 1, width = 1,
+    command = lambda: delete(game_num)))
+    exit_array[game_num].grid(row = game_num + 1, column = column_num)
     column_num = 0
-    row_num += 1
     game_num += 1
 
 
