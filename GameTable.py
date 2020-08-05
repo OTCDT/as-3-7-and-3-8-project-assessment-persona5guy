@@ -194,6 +194,8 @@ def add_game():
     exit_array.append(Button(games_frame, 
                             command=lambda row=len(sorted_list): delete(row)))
     exit_array[-1].grid(row = len(sorted_list) + 1, column = 4)
+    button_frame.grid(row = len(sorted_list) + 2)
+    root.geometry("520x" + str(len(sorted_list)*40+50 + 40))
 
 def collect_game():
     confirm_game.grid_forget()
@@ -205,16 +207,20 @@ def collect_game():
     add_button.grid(row=1,column=0)
 
 def delete(array_loc):
+    for entry in entry_array[array_loc]:
+        entry.grid_forget()
+    exit_array[array_loc].grid_forget()
+    root.mainloop()
     sorted_list.pop(array_loc)
     entry_array.pop(array_loc)
     var_array.pop(array_loc)
-    for entry in entry_array[array_loc]:
-        entry.grid_forget()
-    exit_array[-1].grid_forget()
-    root.mainloop()
 
 def present_game():
-    pass
+    confirm_changes()
+    games_frame.grid_forget()
+    new_list = sort_games(sorted_list)
+    suggestion_label = Label(root, text = "GameTable reccomends " + new_list[0].game_name)
+    suggestion_label.place(relx=0.5, rely=0.5, anchor=CENTER)
 
 def confirm_changes():
     game_num = 0
@@ -227,9 +233,9 @@ def confirm_changes():
 # GUI presentation
 root = Tk()
 root.title("GameTable")
-
+root.geometry("520x" + str(len(sorted_list)*40+50))
 # Make a Table Header for all the objects in the table
-games_frame = ttk.LabelFrame(root, text="Added Games")
+games_frame = ttk.LabelFrame(root, text="Edit Game Info")
 games_frame.grid(row=0,column=0, columnspan = 3, sticky="NSEW")
 
 # Title for game name
@@ -293,17 +299,21 @@ def table_make(sorted_list):
         column_num = 0
         game_num += 1
     return exit_array, var_array, entry_array
-exit_array, var_array, entry_array = table_make(sorted_list)
 
-# See if user is adding a game or not    
-add_button = ttk.Button(root, text = "Add a new game", command = add_game)
+
+# See if user is adding a game or not
+  
+button_frame = ttk.LabelFrame(games_frame)
+button_frame.grid(row = len(sorted_list) + 2, columnspan = 4)    
+add_button = ttk.Button(button_frame, text = "Add a new game", command = add_game)
 add_button.grid(row=1, column=0)
-confirm_game = ttk.Button(root, text = "Confirm game", command = collect_game)
-change_confirm = ttk.Button(root, text = "Confirm Changes", command = confirm_changes)
+confirm_game = ttk.Button(button_frame, text = "Confirm game", command = collect_game)
+change_confirm = ttk.Button(button_frame, text = "Confirm Changes", command = confirm_changes)
 change_confirm.grid(row = 1, column = 1)
-find_game = ttk.Button(root, text = "Find what to play", command = present_game)
+find_game = ttk.Button(button_frame, text = "Find what to play", command = present_game)
 find_game.grid(row = 1, column = 2)
 # Run the GUI
+exit_array, var_array, entry_array = table_make(sorted_list)
 root.mainloop()
 #=======Dummy Variables========#
 print("All games in list")
