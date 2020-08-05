@@ -5,7 +5,7 @@
 #------------------------------#
 #============Changes===========#
 """
- Change date: 22/7/2020
+ Change date: 5/8/2020
  Change Branch: GUI
  GUI added in
  """
