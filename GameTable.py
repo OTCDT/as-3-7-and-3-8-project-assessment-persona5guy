@@ -5,7 +5,7 @@
 #------------------------------#
 #============Changes===========#
 """
- Change date: 8/8/2020
+ Change date: 10/8/2020
  Change Branch: GUI-rework
  GUI structure to be changed into standard
  object oriented design
