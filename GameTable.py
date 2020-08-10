@@ -13,6 +13,7 @@
 
 #============Imports===========#
 import pickle as pkl
+# pickle rick lmao
 from tkinter import ttk
 from tkinter import *
 #==========Game Class==========#
@@ -65,8 +66,8 @@ def boolean_input(user_input):
     while True:
         message = input(user_input)
             # This will transform a string input into a true or false
+            # haha funny number line
         POSITIVE_ANSWERS = ["yes","y","ok"]
-        # haha funny number line
         NEGATIVE_ANSWERS = ["no", "n"]
         # If the message is positive then return positive
         for i in POSITIVE_ANSWERS:
@@ -172,7 +173,6 @@ class gametable_ui(Frame):
 
     def table_make(self):
         #Table Creation
-        row_num = 1
         column_num = 0
         # Make sure the length of the list is larger than one
         if len(self.game_list) > 0:
