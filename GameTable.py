@@ -5,7 +5,7 @@
 #------------------------------#
 #============Changes===========#
 """
- Change date: 8/8/2020
+ Change date: 10/8/2020
  Change Branch: GUI-rework
  GUI structure to be changed into standard
  object oriented design
@@ -264,14 +264,18 @@ class gametable_ui(Frame):
             col_num += 1
         # Add in a delete button at the end of the row
         self.exit_array.append(Button(self.games_frame, image = self.size_image,
-                            command=lambda row=len(self.game_list): self.delete(row)))
+        bg = '#ff8888', command=lambda row=len(self.game_list): self.delete(row)))
         self.exit_array[-1].grid(row = len(self.game_list) + 1, column = 4)
         self.button_frame.grid(row = len(self.game_list) + 2)
+        if self.error():
+            return
         save(self.game_list)
 
     # Collect in a new game from the user
     def collect_game(self):
-        # Remove the confirm button
+        if self.error():
+            return
+        # Remove confirm button
         self.confirm_game.grid_forget()
         # Take information from the entry array and add it into a new object
         new_game = Game(self.var_array[-1][0].get(),
@@ -299,9 +303,12 @@ class gametable_ui(Frame):
         self.game_list.pop(array_loc)
         self.entry_array.pop(array_loc)
         self.var_array.pop(array_loc)
-        save(self.game_list)
         # Reconstruct the delete buttons
         self.delete_button()
+        if self.error():
+            return
+        save(self.game_list)
+
 
 
     # Show the user what the program reccomends
@@ -315,25 +322,10 @@ class gametable_ui(Frame):
     # Allow the user to add in new values
     def confirm_changes(self):
         game_num = 0
+        if self.error():
+            return
         # For each game, change the values using the entries
         for game in self.game_list:
-            # Error Handling
-            # If the user set the priority to be 0 or lower
-            # Present error
-            if self.var_array[game_num][3].get() <= 0:
-                self.message_str.set("Please set priority above 0")
-                self.entry_array[game_num][3].config(bg = '#ff5555')
-                break
-            # If the user has made the played hours greater than total
-            # then present error
-            if (self.var_array[game_num][1].get() 
-                < self.var_array[game_num][2].get()):
-                self.message_str.set(
-                    "Please set total hours to be higher than played")
-                self.entry_array[game_num][1].config(bg = '#ff5555')
-                self.entry_array[game_num][2].config(bg = '#ff5555')
-                break
-            # If no errors, then change the values
             game.change_values(
             self.var_array[game_num][0].get(),
             self.var_array[game_num][1].get(),
@@ -343,9 +335,48 @@ class gametable_ui(Frame):
             # Feedback to user that values have been saved
             self.message_str.set("Changes Saved")
             save(self.game_list)
+
     def save_close(self):
+        if self.error():
+            return
         save(self.game_list)
         root.destroy()
+
+    def error(self):
+        for game_num in range(0,len(self.game_list)):
+            # Error Handling
+            # If the user set the priority to be 0 or lower
+            # Present error
+            for i in range(0,3):
+                if self.var_array[game_num][i].get() == "":
+                    self.message_str.set("Please enter a value in the cell")
+                    self.entry_array[game_num][i].config(bg = "#ff5555")
+                    return True
+                self.entry_array[game_num][i].config(bg = "#ffffff")
+            
+            if self.var_array[game_num][3].get() <= 0:
+                self.message_str.set("Please set priority above 0")
+                self.entry_array[game_num][3].config(bg = '#ff5555')
+                return True
+            # If the user has made the played hours greater than total
+            # then present error
+            if (self.var_array[game_num][1].get() 
+                < self.var_array[game_num][2].get()):
+                self.message_str.set(
+                    "Please set total hours to be higher than played")
+                self.entry_array[game_num][1].config(bg = '#ff5555')
+                self.entry_array[game_num][2].config(bg = '#ff5555')
+                return True
+            elif (self.var_array[game_num][1].get()
+                 == self.var_array[game_num][2].get()):
+                self.message_str.set(
+                    "The total hours is equal to played," +
+                    " delete or change this")
+                self.entry_array[game_num][1].config(bg = '#ff5555')
+                self.entry_array[game_num][2].config(bg = '#ff5555')
+                return True
+            
+                
 
 if __name__ == "__main__":
     root = Tk()
