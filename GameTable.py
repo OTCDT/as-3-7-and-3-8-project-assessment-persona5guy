@@ -5,13 +5,15 @@
 #------------------------------#
 #============Changes===========#
 """
- Change date: 5/8/2020
- Change Branch: GUI
- Comments added
+ Change date: 10/8/2020
+ Change Branch: GUI-rework
+ GUI structure to be changed into standard
+ object oriented design
  """
 
 #============Imports===========#
 import pickle as pkl
+# pickle rick lmao
 from tkinter import ttk
 from tkinter import *
 #==========Game Class==========#
@@ -44,16 +46,6 @@ class Game:
         # Update the true priority
         self.true_priority = (self.remaining_hours 
                               / self.priority)
-        
-    def played(
-        self, hours):
-        if (hours >= 0): 
-        # Ensure the hours being added is atleast 0 or above
-            self.played_hours += hours
-            self.update_values()
-        else:
-        # If below 0 hours, present error
-            print("error, invalid amount of hours") 
     
     def change_values(
         self, name, t_hours, p_hours, new_priority): 
@@ -66,7 +58,7 @@ class Game:
         self.played_hours = p_hours
         self.priority = new_priority
         self.update_values()
-# haha funny number line
+
 
 #===========Functions==========# 
 
@@ -74,6 +66,7 @@ def boolean_input(user_input):
     while True:
         message = input(user_input)
             # This will transform a string input into a true or false
+            # haha funny number line
         POSITIVE_ANSWERS = ["yes","y","ok"]
         NEGATIVE_ANSWERS = ["no", "n"]
         # If the message is positive then return positive
@@ -101,202 +94,292 @@ def sort_games(
 
 def save(object_array):
     # Save the game into a file
-    with open("game.dat", "wb") as output:
+    with open("resources/game.dat", "wb") as output:
         pkl.dump(object_array, output)
 def load():
     # Load game into the file
     try:
-        with open("game.dat", "rb") as input:
+        with open("resources/game.dat", "rb") as input:
          return pkl.load(input)
     except FileNotFoundError:
         return []
-#---------Editing data---------#
-game_array = load()
-sorted_list = sort_games(game_array)
 #============GUI===============#
 
 #-------GUI functions----------#
+class gametable_ui(Frame):
+    def __init__(self, parent, *args, **kwargs):
+        Frame.__init__(self, parent, *args, **kwargs)
+        # Call in the main game list, make a frame, and image for the
+        # size of the delete button
+        self.game_list = sort_games(load())
+        self.games_frame = LabelFrame(root)
+        self.games_frame.grid(row=0,column=0)
+        self.size_image = PhotoImage(width=10,height=10,
+                                    file = "resources\delete.gif")
+        # Titles for the table
+        # Title for game name
+        self.table_title_gamename = ttk.Label(self.games_frame,
+                                             text = "Game Name")
+        self.table_title_gamename.grid(row=0 , column=0, padx=10, pady=2)
 
-# Add in a new game
-def add_game():
-    add_button.grid_forget()
-    confirm_game.grid(row=1,column=0)
-    # Create a new row for the new game in each array
-    var_array.append([])
-    entry_array.append([])
-    for j in range(0,4):
-        if j == 0:
-            # If first column use a string(game name)
-            var_array[-1].append(StringVar())
-        elif j != 0:
-            # If other column us a number
-            var_array[-1].append(DoubleVar())
-        # Add in the entry box
-        entry_array[-1].append(ttk.Entry(games_frame,
-                     textvariable = var_array[-1][j]))
-    col_num = 0
-    for entry in entry_array[-1]:
-        # Place the new entries in the last row
-        entry.grid(row = len(sorted_list) + 1, column = col_num)
-        col_num += 1
-    # Add in a delete button at the end of te row
-    exit_array.append(Button(games_frame, 
-                            command=lambda row=len(sorted_list): delete(row)))
-    exit_array[-1].grid(row = len(sorted_list) + 1, column = 4)
-    button_frame.grid(row = len(sorted_list) + 2)
-    # Readjust the window size to accomodate more new games
-    root.geometry("520x" + str(len(sorted_list)*35+90))
+        #Title for total hours
+        self.table_title_totalhours = ttk.Label(self.games_frame,
+                                                 text = "Total Hours")
+        self.table_title_totalhours.grid(row=0,column=1, padx=10, pady=2)
 
-# Collect in a new game from the user
-def collect_game():
-    # Remove the confirm button
-    confirm_game.grid_forget()
-    # Take information from the entry array and add it into a new object
-    new_game = Game(var_array[-1][0].get(),var_array[-1][1].get()
-                    ,var_array[-1][2].get(),var_array[-1][3].get())
-    # Add the object into the array
-    game_array.append(new_game)
-    # Sort this array to find the 'best option'
-    sorted_list = sort_games(game_array)
-    # Add the add button back
-    add_button.grid(row=1,column=0)
+        #Title for played hours
+        self.table_title_playedhours = ttk.Label(self.games_frame,
+                                                 text = "Played Hours")
+        self.table_title_playedhours.grid(row=0,column=2, padx=10, pady=2)
 
-# Delete a game if user desires
-def delete(array_loc):
-    # Remove each entry row
-    for entry in entry_array[array_loc]:
-        entry.grid_forget()
-    # Remove the delete button
-    exit_array[array_loc].grid_forget()
-    # Remove this from any related tables
-    sorted_list.pop(array_loc)
-    entry_array.pop(array_loc)
-    var_array.pop(array_loc)
+        #Title for priority
+        self.table_title_priority = ttk.Label(self.games_frame,
+                                             text = "Priority")
+        self.table_title_priority.grid(row=0,column=3, padx=10, pady=2)
+        # Created labels, to look like:
+        # Game Name | Total Hours | Played Hours | Priority
 
-# Show the user what the program reccomends
-def present_game():
-    # Save all the changes made to the list
-    confirm_changes()
-    new_list = sort_games(sorted_list)
-    # Show the new list
-    message_str.set("Gametable recommends: " + new_list[0].game_name)
-    # Resize to fit the reccomendation
-    root.geometry("520x" + str(len(sorted_list)*35 + 90))
+        # Buttons made at the button used to manipulate the program
+        self.button_frame = ttk.LabelFrame(self.games_frame)
+        self.button_frame.grid(row = len(self.game_list) + 2, columnspan = 4)    
+        self.add_button = ttk.Button(self.button_frame,
+                                    text = "Add a new game",
+                                    command = self.add_game)
+        self.add_button.grid(row=1, column=0)
+        self.confirm_game = ttk.Button(self.button_frame,
+                                    text = "Confirm game", 
+                                    command = self.collect_game)
+        self.change_confirm = ttk.Button(self.button_frame, 
+                                    text = "Confirm Changes", 
+                                    command = self.confirm_changes)
+        self.change_confirm.grid(row = 1, column = 1)
+        self.find_game = ttk.Button(self.button_frame, 
+                                    text = "Find what to play", 
+                                    command = self.present_game)
+        self.find_game.grid(row = 1, column = 2)
+        self.save_close_button = ttk.Button(self.button_frame,
+                                    text = "Save and Close",
+                                    command = self.save_close)
+        self.save_close_button.grid(row=1,column = 3)
+        self.message_str = StringVar()
+        self.message_label = Label(root, textvariable = self.message_str)
+        self.message_label.grid(row = 1, columnspan = 4)
 
-# Allow the user to add in new values
-def confirm_changes():
-    game_num = 0
-    # For each game, change the values using the entries
-    # Resize to fit the message
-    root.geometry("520x" + str(len(sorted_list)*35 + 90))
-    message_label.grid(row = 2, columnspan = 4)
-    for game in sorted_list:
-        if var_array[game_num][3].get() <= 0:
-            message_str.set("Please set priority above 0")
-            entry_array[game_num][3].config(bg = '#ff5555')
-            break
-        if var_array[game_num][1].get() < var_array[game_num][2].get():
-            message_str.set("Please set total hours to be higher than played")
-            entry_array[game_num][1].config(bg = '#ff5555')
-            entry_array[game_num][2].config(bg = '#ff5555')
-            break
-        game.change_values(
-        var_array[game_num][0].get(), var_array[game_num][1].get(),
-         var_array[game_num][2].get(), var_array[game_num][3].get())
-        game_num += 1
-        message_str.set("Changes Saved")
-    
-    
-# GUI presentation
-root = Tk()
-root.title("GameTable")
-root.geometry("520x" + str(len(sorted_list)*35+50))
-size_image = PhotoImage(width = 10, height = 10)
-# Make a Table Header for all the objects in the table
-games_frame = ttk.LabelFrame(root, text="Edit Game Info")
-games_frame.grid(row=0,column=0, columnspan = 3, sticky="NSEW")
+        # Create a table of each data
+        self.table_make()
 
-# Title for game name
-table_title_gamename = ttk.Label(games_frame, text = "Game Name")
-table_title_gamename.grid(row=0 , column=0, padx=10, pady=2)
+        # Save after all data is loaded
+        save(self.game_list)
 
-#Title for total hours
-table_title_totalhours = ttk.Label(games_frame, text = "Total Hours")
-table_title_totalhours.grid(row=0,column=1, padx=10, pady=2)
-
-#Title for played hours
-table_title_playedhours = ttk.Label(games_frame, text = "Played Hours")
-table_title_playedhours.grid(row=0,column=2, padx=10, pady=2)
-
-#Title for priority
-table_title_priority = ttk.Label(games_frame, text = "Priority")
-table_title_priority.grid(row=0,column=3, padx=10, pady=2)
-
-#Table Creation
-def table_make(sorted_list):
-    row_num = 1
-    column_num = 0
-    # Make sure the length of the list is larger than one
-    if len(sorted_list) > 0:
-        for game in sorted_list:
-            var_array = []
-            entry_array = []
+    def table_make(self):
+        #Table Creation
+        column_num = 0
+        # Make sure the length of the list is larger than one
+        if len(self.game_list) > 0:
+            # Make a list that corresponds to the tables for both
+            # entry labels and variables in the entry
+            self.var_array = []
+            self.entry_array = []
             # Create a row for each game in the list
-            for i in range(0,len(sorted_list)):
-                var_array.append([])
-                entry_array.append([])
+            for i in range(0,len(self.game_list)):
+                self.var_array.append([])
+                self.entry_array.append([])
             # Create a column for each data entry
                 for j in range(0,4):
+                    # If it is in the first row,
+                    # use string var for a name
                     if j == 0:
-                        var_array[i].append(StringVar())
+                        self.var_array[i].append(StringVar())
+                    # If not, use double var for numbers
                     elif j != 0:
-                        var_array[i].append(DoubleVar())
+                        self.var_array[i].append(DoubleVar())
                     # Create an entry into a table
                     # with specific coordinates (i,j)
-                    entry_array[i].append(Entry(games_frame,
-                    textvariable = var_array[i][j]))
-    # If not, then make empty arrays
-    else:
-        var_array = []
-        entry_array = []
-    game_num = 0
-    exit_array = []
-    # Placement of each section of data
-    for game in var_array:
-        # Set all shown variables
-        game[0].set(sorted_list[game_num].game_name)
-        game[1].set(sorted_list[game_num]._total_hours)
-        game[2].set(sorted_list[game_num].played_hours)
-        game[3].set(sorted_list[game_num].priority)
-        for entry in game:
-            #Place the grid into it's correct place
-            entry_array[game_num][column_num].grid(row = game_num + 1, 
-            column = column_num)
-            column_num += 1
-        # Create and grid a delete button
-        exit_array.append(Button(games_frame, image = size_image, 
-                    bg = '#ff8888', command=lambda row=game_num: delete(row)))
-        exit_array[game_num].grid(row = game_num + 1, column = column_num)
-        column_num = 0
-        game_num += 1
-    return exit_array, var_array, entry_array
+                    self.entry_array[i].append(Entry(self.games_frame,
+                     textvariable = self.var_array[i][j]))
+                # Intended result: variable list = [String, Num, Num, Num]
+                #                  entry = [entry, entry, entry, entry]
+                # Repeated rows for each game added
+        # If not, then make empty arrays to be appended to
+        else:
+            self.var_array = []
+            self.entry_array = []
+            self.message_str.set("Add a game using the [Add Game] Button")
+        game_num = 0
+        # Placement of each section of data
+        # Repeat for each game as a row
+        for game in self.var_array:
+            # Set all shown variables to the variable array
+            game[0].set(self.game_list[game_num].game_name)
+            game[1].set(self.game_list[game_num]._total_hours)
+            game[2].set(self.game_list[game_num].played_hours)
+            game[3].set(self.game_list[game_num].priority)
+            # Intended Result:
+            # variables = [game name,total hours, played hours, priority]
+            # Repeated row for each game
+            for entry in game:
+                #Place the grid into it's correct place long the row
+                self.entry_array[game_num][column_num].grid(
+                                    row = game_num + 1, column = column_num)
+                column_num += 1
+            # Create and grid a delete button
+            column_num = 0
+            game_num += 1
+        self.delete_button()
+    # Add in a new game
+    def delete_button(self):
+        self.exit_array = []
+        for row_num in range(0,len(self.game_list)):
+            # Create and grid a delete button
+            self.exit_array.append(Button(self.games_frame, 
+                            image = self.size_image, bg = '#ff8888',
+                            command=lambda row=row_num: self.delete(row)))
+            # Add delete button to end of row
+            self.exit_array[row_num].grid(row = row_num + 1,
+                                          column = 4)
+        
+    def add_game(self):
+        # Remove the add button, load confirm button in place
+        self.add_button.grid_forget()
+        self.confirm_game.grid(row=1,column=0)
+        # Create a new row for the new game in each array
+        self.var_array.append([])
+        self.entry_array.append([])
+        # Repeated process from table making, adding to the 
+        # end of the arrays
+        for j in range(0,4):
+            if j == 0:
+                # If first column use a string (game name)
+                self.var_array[-1].append(StringVar())
+            elif j != 0:
+                # If other column use a number
+                self.var_array[-1].append(DoubleVar())
+            # Add in the entry box
+            self.entry_array[-1].append(Entry(self.games_frame,
+                         textvariable = self.var_array[-1][j]))
+        col_num = 0
+        for entry in self.entry_array[-1]:
+            # Place the new entries in the last row
+            entry.grid(row = len(self.game_list) + 1, column = col_num)
+            col_num += 1
+        # Add in a delete button at the end of the row
+        self.exit_array.append(Button(self.games_frame, image = self.size_image,
+        bg = '#ff8888', command=lambda row=len(self.game_list): self.delete(row)))
+        self.exit_array[-1].grid(row = len(self.game_list) + 1, column = 4)
+        self.button_frame.grid(row = len(self.game_list) + 2)
+        if self.error():
+            return
+        save(self.game_list)
+
+    # Collect in a new game from the user
+    def collect_game(self):
+        if self.error():
+            return
+        # Remove confirm button
+        self.confirm_game.grid_forget()
+        # Take information from the entry array and add it into a new object
+        new_game = Game(self.var_array[-1][0].get(),
+                        self.var_array[-1][1].get(),
+                        self.var_array[-1][2].get(),
+                        self.var_array[-1][3].get())
+        # Add the object into the array
+        self.game_list.append(new_game)
+        # Sort this array to find the 'best option'
+        self.game_list = sort_games(self.game_list)
+        # Add the add button back
+        self.add_button.grid(row=1,column=0)
+        save(self.game_list)
+
+    # Delete a game if user desires
+    def delete(self, array_loc):
+        # Remove each entry row
+        for entry in self.entry_array[array_loc]:
+            entry.destroy()
+        # Remove the delete button array
+        for button in self.exit_array:
+            button.destroy()
+        self.exit_array.clear()
+        # Remove this from any related tables
+        self.game_list.pop(array_loc)
+        self.entry_array.pop(array_loc)
+        self.var_array.pop(array_loc)
+        # Reconstruct the delete buttons
+        self.delete_button()
+        if self.error():
+            return
+        save(self.game_list)
 
 
-# Buttons made at the button used to manipulate the program
-button_frame = ttk.LabelFrame(games_frame)
-button_frame.grid(row = len(sorted_list) + 2, columnspan = 4)    
-add_button = ttk.Button(button_frame, text = "Add a new game", command = add_game)
-add_button.grid(row=1, column=0)
-confirm_game = ttk.Button(button_frame, text = "Confirm game", command = collect_game)
-change_confirm = ttk.Button(button_frame, text = "Confirm Changes", command = confirm_changes)
-change_confirm.grid(row = 1, column = 1)
-find_game = ttk.Button(button_frame, text = "Find what to play", command = present_game)
-find_game.grid(row = 1, column = 2)
-message_str = StringVar()
-message_label = Label(root, textvariable = message_str)
-message_label.grid(row = 1, columnspan = 4)
-# Run the GUI
-exit_array, var_array, entry_array = table_make(sorted_list)
-root.mainloop()
-# Save any changes
-save(sorted_list)
+
+    # Show the user what the program reccomends
+    def present_game(self):
+        # Save all the changes made to the list
+        self.confirm_changes()
+        new_list = sort_games(self.game_list)
+        # Show the new list
+        self.message_str.set("Gametable recommends: " + new_list[0].game_name)
+
+    # Allow the user to add in new values
+    def confirm_changes(self):
+        game_num = 0
+        if self.error():
+            return
+        # For each game, change the values using the entries
+        for game in self.game_list:
+            game.change_values(
+            self.var_array[game_num][0].get(),
+            self.var_array[game_num][1].get(),
+            self.var_array[game_num][2].get(),
+            self.var_array[game_num][3].get())
+            game_num += 1
+            # Feedback to user that values have been saved
+            self.message_str.set("Changes Saved")
+            save(self.game_list)
+
+    def save_close(self):
+        if self.error():
+            return
+        save(self.game_list)
+        root.destroy()
+
+    def error(self):
+        for game_num in range(0,len(self.game_list)):
+            # Error Handling
+            # If the user set the priority to be 0 or lower
+            # Present error
+            for i in range(0,3):
+                if self.var_array[game_num][i].get() == "":
+                    self.message_str.set("Please enter a value in the cell")
+                    self.entry_array[game_num][i].config(bg = "#ff5555")
+                    return True
+                self.entry_array[game_num][i].config(bg = "#ffffff")
+            
+            if self.var_array[game_num][3].get() <= 0:
+                self.message_str.set("Please set priority above 0")
+                self.entry_array[game_num][3].config(bg = '#ff5555')
+                return True
+            # If the user has made the played hours greater than total
+            # then present error
+            if (self.var_array[game_num][1].get() 
+                < self.var_array[game_num][2].get()):
+                self.message_str.set(
+                    "Please set total hours to be higher than played")
+                self.entry_array[game_num][1].config(bg = '#ff5555')
+                self.entry_array[game_num][2].config(bg = '#ff5555')
+                return True
+            elif (self.var_array[game_num][1].get()
+                 == self.var_array[game_num][2].get()):
+                self.message_str.set(
+                    "The total hours is equal to played," +
+                    " delete or change this")
+                self.entry_array[game_num][1].config(bg = '#ff5555')
+                self.entry_array[game_num][2].config(bg = '#ff5555')
+                return True
+            
+                
+
+if __name__ == "__main__":
+    root = Tk()
+    gametable_ui(root).grid(row=0,column=0)
+    root.title("GameTable")
+    root.mainloop()
