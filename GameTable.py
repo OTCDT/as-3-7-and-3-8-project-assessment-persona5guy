@@ -119,22 +119,22 @@ class gametable_ui(Frame):
         # Titles for the table
         # Title for game name
         self.table_title_gamename = ttk.Label(self.games_frame,
-                                             text = "Game Name")
+                                             text = "Game Name\n")
         self.table_title_gamename.grid(row=0 , column=0, padx=10, pady=2)
 
         #Title for total hours
         self.table_title_totalhours = ttk.Label(self.games_frame,
-                                                 text = "Total Hours")
+                                                 text = "Total Hours\nHow long to play?")
         self.table_title_totalhours.grid(row=0,column=1, padx=10, pady=2)
 
         #Title for played hours
         self.table_title_playedhours = ttk.Label(self.games_frame,
-                                                 text = "Played Hours")
+                                                 text = "Played Hours\nThe hours you played")
         self.table_title_playedhours.grid(row=0,column=2, padx=10, pady=2)
 
         #Title for priority
         self.table_title_priority = ttk.Label(self.games_frame,
-                                             text = "Priority")
+                                             text = "Priority\nRank your games")
         self.table_title_priority.grid(row=0,column=3, padx=10, pady=2)
         # Created labels, to look like:
         # Game Name | Total Hours | Played Hours | Priority
@@ -196,7 +196,7 @@ class gametable_ui(Frame):
                     # Create an entry into a table
                     # with specific coordinates (i,j)
                     self.entry_array[i].append(Entry(self.games_frame,
-                     textvariable = self.var_array[i][j]))
+                     textvariable = self.var_array[i][j], width = 25))
                 # Intended result: variable list = [String, Num, Num, Num]
                 #                  entry = [entry, entry, entry, entry]
                 # Repeated rows for each game added
