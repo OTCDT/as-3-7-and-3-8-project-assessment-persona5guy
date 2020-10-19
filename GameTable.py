@@ -343,7 +343,7 @@ class gametable_ui(Frame):
         root.destroy()
 
     def error(self):
-        for game_num in range(0,len(self.game_list) + 1):
+        for game_num in range(0,len(self.game_list)):
             # Error Handling
             # If the user set the priority to be 0 or lower
             # Present error
